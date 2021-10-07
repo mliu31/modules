@@ -30,13 +30,13 @@ typedef struct real_queue_t {
 queue_t* qopen(void) {
   rq_t *qp;
 
-	qp->front=NULL;
-	qp->back=NULL;
-	
   if (!(qp = (rq_t*)malloc(sizeof(rq_t)))) {
     printf("[Error: malloc failed for queue]\n");
     return NULL; 
   }
+
+	qp->front=NULL;
+	qp->back=NULL;
 
   return (queue_t*)qp; 
 }
@@ -67,8 +67,35 @@ int32_t qput(queue_t* qp, void* elementp) {
 		rq->back->next = rqe; 
 	rq->back = rqe; 
 	return 0; 
-} 
+}
 
+void* qget(queue_t *qp) {
 
+	rq_t *rq;
 
+	rq = (rq_t*)qp;
+
+	if (rq->back==NULL && rq->front==NULL) {
+		printf("Cannot get() element from empty queue\n");
+		return NULL;
+	}
+	else if(rq->back==rq->front) {
+		rqe_t *placeholder;
+
+		placeholder = rq->front;
+		rq->front = NULL;
+		rq->back = NULL;
+
+		return placeholder;
+	}
+	else {
+		rqe_t *placeholder;
+
+		placeholder = rq->front;
+		rq->front = rq->front->next;
+
+		return placeholder;
+	}
+	
+}
 int main(void) {}
