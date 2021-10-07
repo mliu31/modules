@@ -15,21 +15,24 @@
 #include "queue.h"
 
 
-static typedef struct real_qelem_t {
+typedef struct real_qelem_t {
 	struct real_qelem_t *next; 
 	void *data;
 } rqe_t; 
 
 
-static typedef struct real_queue_t {
-	rqe_t *front=NULL;
-	rqe_t *back=NULL;  
+typedef struct real_queue_t {
+	rqe_t *front;
+	rqe_t *back;  
 } rq_t; 
 
 
 queue_t* qopen(void) {
   rq_t *qp;
 
+	qp->front=NULL;
+	qp->back=NULL;
+	
   if (!(qp = (rq_t*)malloc(sizeof(rq_t)))) {
     printf("[Error: malloc failed for queue]\n");
     return NULL; 
@@ -57,7 +60,6 @@ int32_t qput(queue_t* qp, void* elementp) {
 
 	rqe->data = elementp;
 		
-	// CAN'T DECLARE AND INSTNATIATE VAR IN THE SAME LINE? 
 	
 	if (rq->back==NULL && rq->front==NULL) 
 		rq->front = rqe; 
@@ -69,4 +71,4 @@ int32_t qput(queue_t* qp, void* elementp) {
 
 
 
-// int main(void) {}
+int main(void) {}
