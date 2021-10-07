@@ -99,6 +99,32 @@ void* qget(queue_t *qp) {
 	
 }
 
+void qapply(queue_t *qp, void(*fn)(void* elementp)) {
+
+	rqe_t* e;
+	rq_t *rq;
+	
+	rq = (rq_t*)qp;  
+	e = rq->front;
+
+	if(e == NULL){
+		printf("Empty queue\n");
+		return;
+	}
+	
+	while(e != NULL){
+		fn(e->data);
+		e = e->next;
+	}	
+	
+}
+
+static void printe(void* element_p) {
+
+	printf("%d\n", *((int*)element_p));
+
+}
+
 static void print_queue(queue_t* qp) {
 	rqe_t* e;
 	rq_t *rq;
@@ -126,7 +152,7 @@ int main(void) {
 	
 	qput(my_queue,&num_pt);
 	qput(my_queue, &second_num);
-	print_queue(my_queue);
+	qapply(my_queue, printe);
 	
 	qget(my_queue);
 	print_queue(my_queue);
