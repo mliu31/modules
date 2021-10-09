@@ -43,15 +43,30 @@ queue_t* qopen(void) {
 }
 
 void qclose(queue_t *qp) {
-  free(qp); 
-}
+	//queue_t* whatever = qp;
+	rq_t *rq;
+	rqe_t *e, *prev;
 
+	rq = (rq_t*)(qp);
+	e = rq->front;
+
+	while(e != NULL) {
+		prev = e;
+		e = e->next;
+
+		free(prev);
+	}
+		
+	free(rq);
+
+}
+	
 int32_t qput(queue_t* qp, void* elementp) {
 	rq_t *rq;
 	rqe_t *rqe;
 
 	rq = (rq_t*)qp;	
- 
+
 	if (!(rqe = (rqe_t*)malloc(sizeof(rqe_t)))) {
 		printf("[Error: malloc failed for queue element]\n");
 		return -1;
@@ -157,16 +172,26 @@ void qapply(queue_t *qp, void(*fn)(void* elementp)) {
 void* qremove(queue_t *qp, bool (*searchfn)(void* elementp, const void* keyp), const void* skeyp) {
 
 	rq_t *rq;
-	rqe_t *e;
+	rqe_t *e, *prev;
 
 	rq = (rq_t*)qp;
 	e = rq->front;
+	prev = e;
 	
 	while(e != NULL) {
 		if(searchfn(e->data, skeyp) == true) {
-			// remove e from queue
+			if(e == rq->front && e == rq->back) {
+				rq->front = NULL;
+				return e;
+			}
+			if(e == rq->front) {
+				rq->front = e->next;
+				return e;
+			}
+			prev->next = e->next;
 			return e;
 		}
+		prev = e;
 		e = e->next;
 	}
 	
@@ -192,13 +217,12 @@ void qconcat(queue_t *q1p, queue_t *q2p) {
 
 }
 
-/*
 
 static void printe(void* element_p) {
 
 	printf("%d\n", *((int*)element_p));
 
-	}*/
+	}
 
 static void print_queue(queue_t* qp) {
 	rqe_t* e;
@@ -219,22 +243,29 @@ static void print_queue(queue_t* qp) {
 }
 
 int main(void) {
-	queue_t* my_queue = qopen();
-
-	rqe_t* search_return;
+	queue_t *my_queue = qopen();
+	rqe_t *search_return, *remove_return;
 	int num_pt, second_num, third_num;
 
 	num_pt = 3;
 	second_num = 7;
-	third_num = 3;
+	third_num = 7;
 
-  bool y = srch((void*)(&second_num), (void*)(&third_num));
-	printf("%d\n", y);
+  //bool y = srch((void*)(&second_num), (void*)(&third_num));
+	//printf("%d\n", y);
 	
 	qput(my_queue,&num_pt);
-	//qput(my_queue, &second_num);
+	qput(my_queue, &second_num);
 	//qapply(my_queue, printe);
+	remove_return = (rqe_t*)(qremove(my_queue, srch, &third_num));
 
+	if(remove_return == NULL) {
+		printf("element not found!\n");
+	} else {
+		printf("%d\n", *((int*)remove_return->data));
+	}
+	
+	
 	/*search_return = (rqe_t*)(qsearch(my_queue, srch, &third_num));
 	if(search_return == NULL) {
 		printf("element not found!\n");
@@ -242,8 +273,7 @@ int main(void) {
 		printf("%d\n", *((int*)search_return->data));
 		}*/
 	
-	//qget(my_queue);
+	qapply(my_queue, printe);  
 	qclose(my_queue);
-	
 	exit(EXIT_SUCCESS);
 }
