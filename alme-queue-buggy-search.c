@@ -42,11 +42,9 @@ queue_t* qopen(void) {
   return (queue_t*)qp; 
 }
 
-
 void qclose(queue_t *qp) {
   free(qp); 
-} 
-
+}
 
 int32_t qput(queue_t* qp, void* elementp) {
 	rq_t *rq;
@@ -156,6 +154,44 @@ void qapply(queue_t *qp, void(*fn)(void* elementp)) {
 	
 }
 
+void* qremove(queue_t *qp, bool (*searchfn)(void* elementp, const void* keyp), const void* skeyp) {
+
+	rq_t *rq;
+	rqe_t *e;
+
+	rq = (rq_t*)qp;
+	e = rq->front;
+	
+	while(e != NULL) {
+		if(searchfn(e->data, skeyp) == true) {
+			// remove e from queue
+			return e;
+		}
+		e = e->next;
+	}
+	
+	return NULL;
+	
+}
+
+void qconcat(queue_t *q1p, queue_t *q2p) {
+
+	rq_t *rq1, *rq2;
+	rqe_t *e;
+
+	rq1 = (rq_t*)q1p;
+	rq2 = (rq_t*)q2p;
+	e = rq2->front;
+
+	while(e != NULL) {
+		// Allocate elements manually or with put function?
+		e = e->next;
+	}
+	
+	qclose(rq2);
+
+}
+
 /*
 
 static void printe(void* element_p) {
@@ -207,8 +243,7 @@ int main(void) {
 		}*/
 	
 	//qget(my_queue);
-	//qclose(my_queue);
-	free(my_queue);
+	qclose(my_queue);
 	
 	exit(EXIT_SUCCESS);
 }
