@@ -156,42 +156,6 @@ void qapply(queue_t *qp, void(*fn)(void* elementp)) {
 	
 }
 
-
-
-
-void* qsearch(queue_t *qp, bool (*searchfn)(void* elementp, const void* keyp), const void* skeyp) {
-	rq_t *rq;
-	rqe_t *e;
-
-	rq = (rq_t*)qp;  
-	e = rq->front;
-
-	if(e == NULL){
-		printf("Empty queue\n");
-		return NULL;
-	}
-	
-	while(e != NULL){
-		printf("entered while loop"); 
-		//if (searchfn(e->data, skeyp)) {
-		//		return e->data; 
-		//}
-		e = e->next;
-	}	
-	return NULL; 
-}
-
-static bool searchfn(void *elementp, const void *keyp) {
-	int* element = (int*)elementp; 
-	int* key = (int*) keyp;
-	
-	if (&element == &key) {
-		return true; 
-	}
-	return false; 
-}
-
-
 /*
 
 static void printe(void* element_p) {
