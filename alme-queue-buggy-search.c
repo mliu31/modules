@@ -53,7 +53,7 @@ int32_t qput(queue_t* qp, void* elementp) {
 	rqe_t *rqe;
 
 	rq = (rq_t*)qp;	
-
+ 
 	if (!(rqe = (rqe_t*)malloc(sizeof(rqe_t)))) {
 		printf("[Error: malloc failed for queue element]\n");
 		return -1;
@@ -157,11 +157,48 @@ void qapply(queue_t *qp, void(*fn)(void* elementp)) {
 }
 
 
+
+
+void* qsearch(queue_t *qp, bool (*searchfn)(void* elementp, const void* keyp), const void* skeyp) {
+	rq_t *rq;
+	rqe_t *e;
+
+	rq = (rq_t*)qp;  
+	e = rq->front;
+
+	if(e == NULL){
+		printf("Empty queue\n");
+		return NULL;
+	}
+	
+	while(e != NULL){
+		printf("entered while loop"); 
+		//if (searchfn(e->data, skeyp)) {
+		//		return e->data; 
+		//}
+		e = e->next;
+	}	
+	return NULL; 
+}
+
+static bool searchfn(void *elementp, const void *keyp) {
+	int* element = (int*)elementp; 
+	int* key = (int*) keyp;
+	
+	if (&element == &key) {
+		return true; 
+	}
+	return false; 
+}
+
+
+/*
+
 static void printe(void* element_p) {
 
 	printf("%d\n", *((int*)element_p));
 
-}
+	}*/
 
 static void print_queue(queue_t* qp) {
 	rqe_t* e;
@@ -183,6 +220,7 @@ static void print_queue(queue_t* qp) {
 
 int main(void) {
 	queue_t* my_queue = qopen();
+
 	rqe_t* search_return;
 	int num_pt, second_num, third_num;
 
