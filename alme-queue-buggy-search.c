@@ -44,8 +44,26 @@ queue_t* qopen(void) {
 
 
 void qclose(queue_t *qp) {
-  free(qp); 
-} 
+	//queue_t* whatever = qp;
+	rq_t *rq;
+	rqe_t *e, *prev;
+
+	rq = (rq_t*)(qp);
+	e = rq->front;
+
+	while(e != NULL) {
+		prev = e;
+		e = e->next;
+
+		free(prev);
+	}
+		
+	free(rq);
+
+}
+	
+	//free((((rq_t*)(whatever))->front));
+	//free(((rq_t*)(whatever)));  
 
 
 int32_t qput(queue_t* qp, void* elementp) {
@@ -53,7 +71,7 @@ int32_t qput(queue_t* qp, void* elementp) {
 	rqe_t *rqe;
 
 	rq = (rq_t*)qp;	
- 
+
 	if (!(rqe = (rqe_t*)malloc(sizeof(rqe_t)))) {
 		printf("[Error: malloc failed for queue element]\n");
 		return -1;
@@ -156,13 +174,12 @@ void qapply(queue_t *qp, void(*fn)(void* elementp)) {
 	
 }
 
-/*
 
 static void printe(void* element_p) {
 
 	printf("%d\n", *((int*)element_p));
 
-	}*/
+}
 
 static void print_queue(queue_t* qp) {
 	rqe_t* e;
@@ -184,7 +201,6 @@ static void print_queue(queue_t* qp) {
 
 int main(void) {
 	queue_t* my_queue = qopen();
-
 	rqe_t* search_return;
 	int num_pt, second_num, third_num;
 
@@ -192,12 +208,12 @@ int main(void) {
 	second_num = 7;
 	third_num = 3;
 
-  bool y = srch((void*)(&second_num), (void*)(&third_num));
-	printf("%d\n", y);
+  //bool y = srch((void*)(&second_num), (void*)(&third_num));
+	//printf("%d\n", y);
 	
-	qput(my_queue,&num_pt);
+	//qput(my_queue,&num_pt);
 	//qput(my_queue, &second_num);
-	//qapply(my_queue, printe);
+	qapply(my_queue, printe);
 
 	/*search_return = (rqe_t*)(qsearch(my_queue, srch, &third_num));
 	if(search_return == NULL) {
@@ -207,8 +223,9 @@ int main(void) {
 		}*/
 	
 	//qget(my_queue);
-	//qclose(my_queue);
-	free(my_queue);
+	qclose(my_queue);
+	//free((((rq_t*)(my_queue))->front));
+	//free(my_queue);
 	
 	exit(EXIT_SUCCESS);
 }
