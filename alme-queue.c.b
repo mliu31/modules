@@ -21,28 +21,17 @@ typedef struct real_qelem_t {
 	void *data;
 } rqe_t; 
 
+
 typedef struct real_queue_t {
 	rqe_t *front;
 	rqe_t *back;  
 } rq_t; 
 
-typedef struct int_type {
-	int number;
-} int_t;
-
-int_t* makeint(int k) {
-
-	int_t* intthing = (int_t*)calloc(1, sizeof(int_t));
-	intthing->number = k;
-
-	return intthing;
-
-}
 
 queue_t* qopen(void) {
   rq_t *qp;
 
-  if (!(qp = (rq_t*)calloc(1, sizeof(rq_t)))) {
+  if (!(qp = (rq_t*)malloc(sizeof(rq_t)))) {
     printf("[Error: malloc failed for queue]\n");
     return NULL; 
   }
@@ -78,7 +67,7 @@ int32_t qput(queue_t* qp, void* elementp) {
 
 	rq = (rq_t*)qp;	
 
-	if (!(rqe = (rqe_t*)calloc(1, sizeof(rqe_t)))) {
+	if (!(rqe = (rqe_t*)malloc(sizeof(rqe_t)))) {
 		printf("[Error: malloc failed for queue element]\n");
 		return -1;
 	}
@@ -89,8 +78,7 @@ int32_t qput(queue_t* qp, void* elementp) {
 	if (rq->back==NULL && rq->front==NULL) 
 		rq->front = rqe; 
 	else 
-		rq->back->next = rqe;
-
+		rq->back->next = rqe; 
 	rq->back = rqe; 
 	return 0; 
 }
@@ -106,27 +94,21 @@ void* qget(queue_t *qp) {
 		return NULL;
 	}
 	else if(rq->back==rq->front) {
-		void *removed_data;
+		rqe_t *placeholder;
 
-		removed_data = rq->front->data;
-		free(rq->front);
+		placeholder = rq->front;
 		rq->front = NULL;
 		rq->back = NULL;
 
-		return removed_data;
+		return placeholder;
 	}
 	else {
-		void *removed_data;
-		rqe_t *e;
+		rqe_t *placeholder;
 
-		e = rq->front;
-
-		removed_data = e->data;
+		placeholder = rq->front;
 		rq->front = rq->front->next;
 
-		free(e);
-
-		return removed_data;
+		return placeholder;
 	}
 	
 }
@@ -165,7 +147,6 @@ void qapply(queue_t *qp, void(*fn)(void* elementp)) {
 
 	rqe_t* e;
 	rq_t *rq;
-	void *datas;
 	
 	rq = (rq_t*)qp;
 
@@ -221,59 +202,69 @@ void* qremove(queue_t *qp, bool (*searchfn)(void* elementp, const void* keyp), c
 void qconcat(queue_t *q1p, queue_t *q2p) {
 
 	rq_t *rq1, *rq2;
+	rqe_t *e;
 
 	rq1 = (rq_t*)q1p;
 	rq2 = (rq_t*)q2p;
+	e = rq2->front;
 
-	if(rq1->front != NULL) {
-		rq1->back->next = rq2->front;
-		rq1->back = rq2->back;
-	} else {
-		rq1->front = rq2->front;
-		rq1->back = rq2->back;
+	while(e != NULL) {
+		// Allocate elements manually or with put function?
+		e = e->next;
 	}
 	
-	free(rq2);
+	qclose(rq2);
 
 }
 
+
 static void printe(void* element_p) {
 
-	printf("%d\n", (((int_t*)(element_p))->number));
+	printf("%d\n", *((int*)element_p));
 
 	}
 
+static void print_queue(queue_t* qp) {
+	rqe_t* e;
+	rq_t *rq;
+	
+	rq = (rq_t*)qp;  
+	e = rq->front;
+
+	if(e == NULL){
+		printf("Empty queue\n");
+		return;
+	}
+	
+	while(e != NULL){
+		printf("Value: %d\n",*((int*)e->data));
+		e = e->next;
+	}
+}
+
 int main(void) {
 	queue_t *my_queue = qopen();
-	queue_t *my_queue_2 = qopen();
 	rqe_t *search_return, *remove_return;
 	int num_pt, second_num, third_num;
-	int_t* removed_number;
-	
+
 	num_pt = 3;
 	second_num = 7;
 	third_num = 7;
 
-	int_t* number_one = makeint(num_pt);
-	int_t* number_two = makeint(second_num);
   //bool y = srch((void*)(&second_num), (void*)(&third_num));
 	//printf("%d\n", y);
 	
-	//qput(my_queue, number_one);
-	qput(my_queue_2, number_two);
+	qput(my_queue,&num_pt);
+	qput(my_queue, &second_num);
 	//qapply(my_queue, printe);
-	//remove_return = (rqe_t*)(qremove(my_queue, srch, &third_num));
-	/*
+	remove_return = (rqe_t*)(qremove(my_queue, srch, &third_num));
+
 	if(remove_return == NULL) {
 		printf("element not found!\n");
 	} else {
 		printf("%d\n", *((int*)remove_return->data));
-		}*/
-	qapply(my_queue, printe);
-
-	//removed_number = ((int_t*)(qget(my_queue)));
-
-	//printf("Removed int is %d\n", removed_number->number);
+	}
+	
 	
 	/*search_return = (rqe_t*)(qsearch(my_queue, srch, &third_num));
 	if(search_return == NULL) {
@@ -282,10 +273,7 @@ int main(void) {
 		printf("%d\n", *((int*)search_return->data));
 		}*/
 	
-	qconcat(my_queue, my_queue_2);
-	qapply(my_queue, printe);
+	qapply(my_queue, printe);  
 	qclose(my_queue);
-	free(number_one);
-	free(number_two);
 	exit(EXIT_SUCCESS);
 }
