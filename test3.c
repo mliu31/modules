@@ -9,6 +9,10 @@
  * 
  */
 
+#include <stdlib.h>
+#include <stdio.h>
+#include "queue.h"
+
 void print_element(void* element_p) {
 	printf("%d\n", *((int*)element_p));
 }
