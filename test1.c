@@ -5,7 +5,7 @@
  * Created: Thu Oct  7 10:39:28 2021 (-0400)
  * Version: 1
  * 
- * Description: Test file for queue
+ * Description: Test file for queue. Testing qopen and qclose.
  * 
  */
 
@@ -14,14 +14,20 @@
 #include <stdio.h>
 
 int main(void) {
-	printf("Here");
 	queue_t* my_queue = qopen();
 
 	if(my_queue == NULL) {
-		printf("Failed");
+		printf("Qopen failed to make the queue\n");
 		exit(EXIT_FAILURE);
-	} else{
-		printf("Success");
-		exit(EXIT_SUCCESS);
 	}
+
+	qclose(my_queue);
+
+	if(my_queue != NULL) {
+		printf("Qclose failed to close the queue\n");
+		exit(EXIT_FAILURE);
+	}
+
+	exit(EXIT_SUCCESS);
+	
 }
