@@ -2,10 +2,10 @@
  * 
  * 
  * Author: Alejandro A. Lopez Cochachi
- * Created: Sun Oct 10 13:57:06 2021 (-0400)
- * Version: 4
+ * Created: Sun Oct 10 12:26:20 2021 (-0400)
+ * Version: 2
  * 
- * Description: Test file for queue. Testing qsearch and qremove
+ * Description: Test file for queue. Tests qsearch. 
  * 
  */
 
@@ -13,46 +13,69 @@
 #include <stdio.h>
 #include "queue.h"
 
-bool srch(void* elementp, const void* keyp) {
+typedef struct int_type {
+	int number;
+} int_t; 
 
-	int* a = ((int*)(elementp));
-	int* b = ((int*)(keyp));
 
-	if(*a == *b) {
-		return true;
-	} else {
-		return false;
-	}
+int_t* makeint(int k) {
+	int_t* integer_package = (int_t*)calloc(1, sizeof(int_t));
+	integer_package->number = k;
+
+	return integer_package; 
 }
 
-int main(void) {
 
+bool srch(void* elementp, const void* keyp) {
+	int *a = ((int*)(elementp));
+	int *b = ((int*)(keyp));
+
+	if (*a == *b)
+		return true;
+	else
+		return false; 
+}
+
+
+int main(void) { 
 	queue_t *my_queue = qopen();
-	rqe_t *search_return, *remove_return;
-	int first_el, second_el, third_el;
-		
-	first_el = 1;
-	second_el = 2;
-	third_el = 3;
+	int int1, int2, int3; 
+	int_t *intt1, *intt2, *intt3, *sought_intt;
+	
+	int1 = 1;
+	int2 = 2;
+	int3 = 3; 
+	
+	intt1 = makeint(int1);
+	intt2 = makeint(int2);
+	intt3 = makeint(int3);
 
-	qput(my_queue, &first_el);
-	qput(my_queue, &second_el);
-	qput(my_queue, &third_el);
-
-	search_return = (rqe_t*)qsearch(my_queue, srch, first_el);
-
-	if(search_return != first_el) {
-		printf("Search failed\n");
-		exit(EXIT_FAILURE);
-	}
-
-	remove_return = (rqe_t*)qremove(my_queue, srch, first_el);
-
-	if(remove_return != first_el) {
-		printf("Remove failed\n");
-		exit(EXIT_FAILURE);
+	// search for elem in empty queue
+	sought_intt= qsearch(my_queue, srch, intt1); 
+	if (sought_intt != NULL) {
+		printf("[Error: qsearch failed\n]"); 
+		exit(EXIT_FAILURE); 
 	}
 	
-	qclose(my_queue);
+	qput(my_queue, intt1);
+	qput(my_queue, intt2);
+  qput(my_queue, intt3);	
+
+	// search for existing elem in non-empty queue
+	sought_intt = qsearch(my_queue, srch, intt1); 
+	if (sought_intt == NULL) {
+		printf("[Error: qsearch failed\n]"); 
+		exit(EXIT_FAILURE);
+	}
+
+	// search for non-existent elem in non-empty queue
+	sought_intt = qsearch(my_queue, srch, intt1); 
+	if (sought_intt != NULL) {
+		printf("[Error: qsearch failed\n]"); 
+		exit(EXIT_FAILURE); 
+	} 
+		
+ 	qclose(my_queue);
 	exit(EXIT_SUCCESS);
+
 }

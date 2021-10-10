@@ -9,22 +9,22 @@
  * 
  */
 
-#include "queue.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include "queue.h"
 
 int main(void) {
 	queue_t* my_queue = qopen();
 
 	if(my_queue == NULL) {
-		printf("Qopen failed to make the queue\n");
+		printf("[Error: failed to make the queue]\n");
 		exit(EXIT_FAILURE);
 	}
 
 	qclose(my_queue);
 
 	if(my_queue != NULL) {
-		printf("Qclose failed to close the queue\n");
+		printf("[Error: failed to close the queue]\n");
 		exit(EXIT_FAILURE);
 	}
 
