@@ -139,7 +139,6 @@ void qapply(queue_t *qp, void(*fn)(void* elementp)) {
 
 	rqe_t* e;
 	rq_t *rq;
-	void *datas;
 	
 	rq = (rq_t*)qp;
 
