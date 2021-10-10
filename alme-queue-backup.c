@@ -15,6 +15,7 @@
 #include <stdbool.h>
 #include "queue.h"
 
+
 typedef struct real_qelem_t {
 	struct real_qelem_t *next; 
 	void *data;
@@ -24,6 +25,19 @@ typedef struct real_queue_t {
 	rqe_t *front;
 	rqe_t *back;  
 } rq_t; 
+
+typedef struct int_type {
+	int number;
+} int_t;
+
+int_t* makeint(int k) {
+
+	int_t* intthing = (int_t*)calloc(1, sizeof(int_t));
+	intthing->number = k;
+
+	return intthing;
+
+}
 
 queue_t* qopen(void) {
   rq_t *qp;
@@ -135,6 +149,18 @@ void* qsearch(queue_t *qp, bool (*searchfn)(void* elementp, const void* keyp), c
 
 }
 
+bool srch(void* elementp, const void* keyp) {
+
+	int* a = ((int*)(elementp));
+	int* b = ((int*)(keyp));
+
+	if(*a == *b) {
+		return true;
+	} else {
+		return false;
+	}
+	
+}
 void qapply(queue_t *qp, void(*fn)(void* elementp)) {
 
 	rqe_t* e;
@@ -209,4 +235,57 @@ void qconcat(queue_t *q1p, queue_t *q2p) {
 	
 	free(rq2);
 
+}
+
+static void printe(void* element_p) {
+
+	printf("%d\n", (((int_t*)(element_p))->number));
+
+	}
+
+int main(void) {
+	queue_t *my_queue = qopen();
+	queue_t *my_queue_2 = qopen();
+	rqe_t *search_return, *remove_return;
+	int num_pt, second_num, third_num;
+	int_t* removed_number;
+	
+	num_pt = 3;
+	second_num = 7;
+	third_num = 7;
+
+	int_t* number_one = makeint(num_pt);
+	int_t* number_two = makeint(second_num);
+  //bool y = srch((void*)(&second_num), (void*)(&third_num));
+	//printf("%d\n", y);
+	
+	//qput(my_queue, number_one);
+	qput(my_queue_2, number_two);
+	//qapply(my_queue, printe);
+	//remove_return = (rqe_t*)(qremove(my_queue, srch, &third_num));
+	/*
+	if(remove_return == NULL) {
+		printf("element not found!\n");
+	} else {
+		printf("%d\n", *((int*)remove_return->data));
+		}*/
+	qapply(my_queue, printe);
+
+	//removed_number = ((int_t*)(qget(my_queue)));
+
+	//printf("Removed int is %d\n", removed_number->number);
+	
+	/*search_return = (rqe_t*)(qsearch(my_queue, srch, &third_num));
+	if(search_return == NULL) {
+		printf("element not found!\n");
+	} else {
+		printf("%d\n", *((int*)search_return->data));
+		}*/
+	
+	qconcat(my_queue, my_queue_2);
+	qapply(my_queue, printe);
+	qclose(my_queue);
+	free(number_one);
+	free(number_two);
+	exit(EXIT_SUCCESS);
 }
