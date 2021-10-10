@@ -29,7 +29,7 @@ typedef struct real_queue_t {
 typedef struct int_type {
 	int number;
 } int_t;
-
+ 
 int_t* makeint(int k) {
 
 	int_t* intthing = (int_t*)calloc(1, sizeof(int_t));
