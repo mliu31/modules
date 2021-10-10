@@ -126,7 +126,7 @@ void* qsearch(queue_t *qp, bool (*searchfn)(void* elementp, const void* keyp), c
 
 	while(e != NULL) {
 		if(searchfn(e->data, skeyp) == true) {
-			return e;
+			return e->data;
 		}
 		e = e->next;
 	}
@@ -174,14 +174,14 @@ void* qremove(queue_t *qp, bool (*searchfn)(void* elementp, const void* keyp), c
 		if(searchfn(e->data, skeyp) == true) {
 			if(e == rq->front && e == rq->back) {
 				rq->front = NULL;
-				return e;
+				return e->data;
 			}
 			if(e == rq->front) {
 				rq->front = e->next;
-				return e;
+				return e->data;
 			}
 			prev->next = e->next;
-			return e;
+			return e->data;
 		}
 		prev = e;
 		e = e->next;

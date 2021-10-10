@@ -27,10 +27,10 @@ int_t* makeint(int k) {
 
 
 bool srch(void* elementp, const void* keyp) {
-	int *a = ((int*)(elementp));
-	int *b = ((int*)(keyp));
+	int_t *a = ((int_t*)(elementp));
+	int_t *b = ((int_t*)(keyp));
 
-	if (*a == *b)
+	if (a->number == b->number)
 		return true;
 	else
 		return false; 
@@ -43,7 +43,7 @@ int main(void) {
 	int_t *intt1, *intt2, *intt3, *sought_intt;
 	
 	int1 = 1;
-	int2 = 2;
+	int2 = 1;
 	int3 = 3; 
 	
 	intt1 = makeint(int1);
@@ -53,25 +53,25 @@ int main(void) {
 	// search for elem in empty queue
 	sought_intt= qsearch(my_queue, srch, intt1); 
 	if (sought_intt != NULL) {
-		printf("[Error: qsearch failed\n]"); 
+		printf("[Error: qsearch failed 1\n]"); 
 		exit(EXIT_FAILURE); 
 	}
 	
 	qput(my_queue, intt1);
-	qput(my_queue, intt2);
-  qput(my_queue, intt3);	
+	qput(my_queue, intt2);	
 
 	// search for existing elem in non-empty queue
 	sought_intt = qsearch(my_queue, srch, intt1); 
 	if (sought_intt == NULL) {
-		printf("[Error: qsearch failed\n]"); 
+		printf("[Error: qsearch failed 2\n]"); 
 		exit(EXIT_FAILURE);
 	}
 
+	
 	// search for non-existent elem in non-empty queue
-	sought_intt = qsearch(my_queue, srch, intt1); 
+	sought_intt = qsearch(my_queue, srch, intt3); 
 	if (sought_intt != NULL) {
-		printf("[Error: qsearch failed\n]"); 
+		printf("[Error: qsearch failed 3\n]"); 
 		exit(EXIT_FAILURE); 
 	} 
 		
