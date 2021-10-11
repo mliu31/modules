@@ -62,7 +62,7 @@ int main(void) {
 
 	// search for existing elem in non-empty queue
 	sought_intt = qsearch(my_queue, srch, intt1); 
-	if (sought_intt == NULL) {
+	if (sought_intt != intt1) {
 		printf("[Error: qsearch failed 2\n]"); 
 		exit(EXIT_FAILURE);
 	}

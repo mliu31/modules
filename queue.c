@@ -55,7 +55,6 @@ void qclose(queue_t *qp) {
 	}
 		
 	free(rq);
-
 }
 	
 int32_t qput(queue_t* qp, void* elementp) {
@@ -70,8 +69,7 @@ int32_t qput(queue_t* qp, void* elementp) {
 	}
 
 	rqe->data = elementp;
-		
-	
+	 
 	if (rq->back==NULL && rq->front==NULL) 
 		rq->front = rqe; 
 	else 
@@ -180,12 +178,13 @@ void* qremove(queue_t *qp, bool (*searchfn)(void* elementp, const void* keyp), c
 				removed_data = e->data;
 				free(e);
 				rq->front = NULL;
+				rq->back = NULL;
 				return removed_data;
 			}
 			if(e == rq->front) {
 				removed_data = e->data;
-				free(e);
 				rq->front = e->next;
+				free(e);
 				return removed_data; 
 			}
 			removed_data = e->data; 

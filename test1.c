@@ -23,11 +23,6 @@ int main(void) {
 
 	qclose(my_queue);
 
-	if(my_queue != NULL) {
-		printf("[Error: failed to close the queue]\n");
-		exit(EXIT_FAILURE);
-	}
-
 	exit(EXIT_SUCCESS);
 	
 }
