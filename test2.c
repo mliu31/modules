@@ -55,10 +55,14 @@ int main(void) {
 	second_get = qget(my_queue);
 	third_get = qget(my_queue);
 
-	if(first_get == NULL || second_get == NULL || third_get == NULL) {
+	if(first_get != intt1 || second_get != intt2 || third_get != intt3) {
 		printf("[Error: Qget failed]\n");
 		exit(EXIT_FAILURE);
 	}
+
+	free(intt1);
+	free(intt2);
+	free(intt3);
 	
  	qclose(my_queue);
 	exit(EXIT_SUCCESS);
