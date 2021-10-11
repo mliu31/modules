@@ -118,16 +118,13 @@ void* qsearch(queue_t *qp, bool (*searchfn)(void* elementp, const void* keyp), c
 
 	rq_t *rq;
 	rqe_t *e;
-	void *removed_data;
 	
 	rq = (rq_t*)qp;
 	e = rq->front;
 	
 	while(e != NULL) {
 		if(searchfn(e->data, skeyp) == true) {
-			removed_data = e->data;
-			free(e); 
-			return removed_data;
+			return e->data;
 		}
 		e = e->next;
 	}
@@ -186,6 +183,12 @@ void* qremove(queue_t *qp, bool (*searchfn)(void* elementp, const void* keyp), c
 				rq->front = e->next;
 				free(e);
 				return removed_data; 
+			}
+			if(e == rq->back) {
+				removed_data = e->data;
+				rq->back = prev;
+				free(e);
+				return removed_data;
 			}
 			removed_data = e->data; 
 			prev->next = e->next;

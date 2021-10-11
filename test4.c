@@ -51,7 +51,7 @@ int main(void) {
 	intt3 = makeint(int3);
 
 	// search for elem in empty queue
-	sought_intt= qsearch(my_queue, srch, intt1); 
+	sought_intt = qsearch(my_queue, srch, intt1); 
 	if (sought_intt != NULL) {
 		printf("[Error: qsearch failed 1\n]"); 
 		exit(EXIT_FAILURE); 

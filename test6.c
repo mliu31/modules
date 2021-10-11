@@ -46,57 +46,21 @@ void printe(void* element_p) {
 int main(void) { 
 	queue_t *my_queue_1 = qopen();
 	queue_t *my_queue_2 = qopen();
-	queue_t *my_queue_3 = qopen();
-	queue_t *my_queue_4 = qopen();
-	queue_t *my_queue_5 = qopen();
-	queue_t *my_queue_6 = qopen();
-	queue_t *my_queue_7 = qopen();
-	queue_t *my_queue_8 = qopen();
-	
-	int int1, int2, int3, int4; 
-	int_t *intt1, *intt2, *intt3, *intt4;
+
+	int32_t thing;
+	int int1; 
+	int_t *intt1;
 	
 	int1 = 1;
-	int2 = 2;
-	int3 = 3;
-	int4 = 4;
 	
 	intt1 = makeint(int1);
-	intt2 = makeint(int2);
-	intt3 = makeint(int3);
-	intt4 = makeint(int4);
 
-	
-	// search for elem in empty queue
-	qconcat(my_queue_1, my_queue_2); 
+	thing = qput(my_queue_2, intt1);
+	qconcat(my_queue_1, my_queue_2);
 	qapply(my_queue_1, printe);
 	
-	qput(my_queue_3, intt3);
-
-	// search for existing elem in non-empty queue
-	qconcat(my_queue_4, my_queue_3);
-	qapply(my_queue_4, printe);
-	
-	qput(my_queue_5, intt4);
-	
-	// search for non-existent elem in non-empty queue
-	qconcat(my_queue_5, my_queue_6);
-	qapply(my_queue_5, printe);
-
-	qput(my_queue_7, intt1);
-	qput(my_queue_8, intt2);
-	
-	qconcat(my_queue_7, my_queue_8);
-	qapply(my_queue_7, printe);
-
 	free(intt1);
-	free(intt2);
-	free(intt3);
-	free(intt4);
- 	qclose(my_queue_7);
-	qclose(my_queue_5);
-	qclose(my_queue_4);
-	qclose(my_queue_1);
+ 	qclose(my_queue_1);
 	
 	exit(EXIT_SUCCESS);
 

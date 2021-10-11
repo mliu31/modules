@@ -40,7 +40,21 @@ hashtable_t *hopen(uint32_t hsize) {
 	
 }
 
+void hclose(hashtable_t *htp) {
+
+	rhe_t *e;
+	e = (rhe_t*)htp;
+	
+}
+
 int main(void) {
+
+	int32_t size = 17;
+	
+	hashtable_t* thingie = hopen(size);
+	//qclose(((rhe_t*)thingie)[0].queue);
+	//free(thingie);
+	//hclose(thingie);
 
 	return 0;
 	

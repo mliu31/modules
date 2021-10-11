@@ -88,6 +88,7 @@ int main(void) {
 		printf("[Error: qsearch failed test 5]\n"); 
 		exit(EXIT_FAILURE); 
 	}
+	
 	qput(my_queue, intt3);  // 2, 1, 3
 
 	
@@ -96,7 +97,7 @@ int main(void) {
 	if (sought_intt->number != int3) {
 		printf("[Error: qsearch failed test 6]\n"); 
 		exit(EXIT_FAILURE); 
-	}
+		}
 	qput(my_queue, intt3);  // 2, 1, 3
 
 	
