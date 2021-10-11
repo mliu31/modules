@@ -75,7 +75,11 @@ int main(void) {
 		exit(EXIT_FAILURE); 
 	} 
 		
- 	qclose(my_queue);
+	free(intt1);
+	free(intt2);
+	free(intt3);
+	
+	qclose(my_queue);
 	exit(EXIT_SUCCESS);
 
 }

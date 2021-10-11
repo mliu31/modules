@@ -67,7 +67,7 @@ int main(void) {
  	
 	// 3. remove non-existent elem from single-element queue
 	sought_intt = qremove(my_queue, srch, intt2); 
-	if (sought_intt != NULL) {
+	if (sought_intt == NULL) {
 		printf("[Error: qsearch failed test 3]\n"); 
 		exit(EXIT_FAILURE); 
 	}
@@ -76,7 +76,7 @@ int main(void) {
 	
 	// 4. remove existing elem from front of multi-elem queue
 	sought_intt = qremove(my_queue, srch, intt1); 
-	if (sought_intt->number != intt1) {
+	if (sought_intt->number != int1) {
 		printf("[Error: qsearch failed test 4]\n"); 
 		exit(EXIT_FAILURE); 
 	}
@@ -84,7 +84,7 @@ int main(void) {
 	
 	// 5. remove existing elem from middle of multi-elem queue
 	sought_intt = qremove(my_queue, srch, intt3); 
-	if (sought_intt->number != intt3) {
+	if (sought_intt->number != int3) {
 		printf("[Error: qsearch failed test 5]\n"); 
 		exit(EXIT_FAILURE); 
 	}
@@ -93,7 +93,7 @@ int main(void) {
 	
 	// 6. remove existing elem from back of multi-elem queue
 	sought_intt = qremove(my_queue, srch, intt3); 
-	if (sought_intt != intt3) {
+	if (sought_intt->number != int3) {
 		printf("[Error: qsearch failed test 6]\n"); 
 		exit(EXIT_FAILURE); 
 	}
@@ -106,7 +106,12 @@ int main(void) {
 		printf("[Error: qsearch failed test 7]\n"); 
 		exit(EXIT_FAILURE); 
 	}	
-		
+
+	free(intt1);
+	free(intt2);
+	free(intt3);
+	free(intt4);
+	
  	qclose(my_queue);
 	exit(EXIT_SUCCESS);
 
