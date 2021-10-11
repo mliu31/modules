@@ -36,6 +36,10 @@ bool srch(void* elementp, const void* keyp) {
 		return false; 
 }
 
+void printe(void* elementp) {
+	printf("%d-->", *((int*)elementp));
+}
+
 
 int main(void) { 
 	queue_t *my_queue = qopen();
@@ -88,9 +92,10 @@ int main(void) {
 		printf("[Error: qsearch failed test 5]\n"); 
 		exit(EXIT_FAILURE); 
 	}
+	qapply(my_queue, printe); 
 	qput(my_queue, intt3);  // 2, 1, 3
 
-	
+		
 	// 6. remove existing elem from back of multi-elem queue
 	sought_intt = qremove(my_queue, srch, intt3); 
 	if (sought_intt->number != int3) {
@@ -98,7 +103,7 @@ int main(void) {
 		exit(EXIT_FAILURE); 
 	}
 	qput(my_queue, intt3);  // 2, 1, 3
-
+	
 	
 	// 7. remove non-existent elem from multi-elem queue
 	sought_intt = qremove(my_queue, srch, intt4); 
