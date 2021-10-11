@@ -62,14 +62,15 @@ int32_t qput(queue_t* qp, void* elementp) {
 	rqe_t *rqe;
 
 	rq = (rq_t*)qp;	
-
+	
 	if (!(rqe = (rqe_t*)calloc(1, sizeof(rqe_t)))) {
 		printf("[Error: malloc failed for queue element]\n");
 		return -1;
 	}
 
 	rqe->data = elementp;
-	 
+	rqe->next = NULL;
+	
 	if (rq->back==NULL && rq->front==NULL) 
 		rq->front = rqe; 
 	else 
@@ -124,7 +125,12 @@ void* qsearch(queue_t *qp, bool (*searchfn)(void* elementp, const void* keyp), c
 	
 	while(e != NULL) {
 		if(searchfn(e->data, skeyp) == true) {
+<<<<<<< HEAD
 			return e->data;
+=======
+			removed_data = e->data;
+			return removed_data;
+>>>>>>> dcaff6392e6fff564cc129b1192614804a89433d
 		}
 		e = e->next;
 	}
@@ -164,25 +170,35 @@ void* qremove(queue_t *qp, bool (*searchfn)(void* elementp, const void* keyp), c
 	rq_t *rq;
 	rqe_t *e, *prev;
 	void *removed_data;
+
+	if(qp == NULL || skeyp == NULL) {
+		printf("[Error: a parameter is null]\n"); 
+		return NULL; 
+	}
 	
 	rq = (rq_t*)qp;
 	e = rq->front;
 	prev = e;
 	
 	while(e != NULL) {
-		if(searchfn(e->data, skeyp) == true) {
-			if(e == rq->front && e == rq->back) {
+		if(searchfn(e->data, skeyp) == true) { // match to remove
+			if(e == rq->front && e == rq->back) { // single elem q
 				removed_data = e->data;
 				free(e);
 				rq->front = NULL;
 				rq->back = NULL;
 				return removed_data;
 			}
-			if(e == rq->front) {
+			if(e == rq->front) { // front of q
 				removed_data = e->data;
 				rq->front = e->next;
 				free(e);
 				return removed_data; 
+			} if(e == rq->back) { // back of q
+				removed_data = e->data; 
+				rq->back = prev;
+				free(e);
+				return removed_data;
 			}
 			if(e == rq->back) {
 				removed_data = e->data;
