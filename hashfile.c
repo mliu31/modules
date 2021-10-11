@@ -29,8 +29,8 @@ typedef struct real_helem_t {
 typedef struct real_hashtable_t {
 	rhe_t* elems_array[STARTING_ARR_CAPACITY];
 	// when putting new elem in ht, need to check if ht_length == num_entries; double ht_length and copy elem into new one -- amortized O(1) runtime
-	int ht_max_length;
-	int ht_curr_length; 
+	int max_len;
+	int curr_len; 
 	
 } rht_t; 
 
@@ -43,8 +43,8 @@ hashtable_t *hopen(uint32_t hsize) {
 		return NULL;
 	}
 
-	hp->ht_max_length = hsize;
-	hp->ht_curr_length = 0; 
+	hp->max_len = hsize;
+	hp->curr_len = 0; 
 	
 	for(int i = 0; i < hsize; i++) {
 		((hp->elems_array)[i]).queue = qopen();
@@ -57,9 +57,16 @@ hashtable_t *hopen(uint32_t hsize) {
 
 void hclose(hashtable_t *htp) {
 
+	// loop thru each elem in hash (rht_t) ht->elem_array
+	// create rhe_t elem 
+	// free queue and key
+
+	// free elems_array
+	// free ht
+	
 	rhe_t *e;
 	e = (rhe_t*)htp;
-
+	
 	
 	
 }
