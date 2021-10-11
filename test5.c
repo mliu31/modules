@@ -92,11 +92,8 @@ int main(void) {
 		printf("[Error: qsearch failed test 5]\n"); 
 		exit(EXIT_FAILURE); 
 	}
-<<<<<<< HEAD
-	
-=======
+
 	qapply(my_queue, printe); 
->>>>>>> dcaff6392e6fff564cc129b1192614804a89433d
 	qput(my_queue, intt3);  // 2, 1, 3
 
 		

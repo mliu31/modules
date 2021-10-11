@@ -15,25 +15,40 @@
 #include <stdbool.h>
 #include <string.h>
 #include "queue.h"
+#include "list.h"
 #include "hash.h"
+
+#define STARTING_ARR_CAPACITY 20; 
 
 typedef struct real_helem_t {
 	queue_t *queue;
 	char *key;
 } rhe_t;
 
+
+typedef struct real_hashtable_t {
+	rhe_t* elems_array[STARTING_ARR_CAPACITY];
+	// when putting new elem in ht, need to check if ht_length == num_entries; double ht_length and copy elem into new one -- amortized O(1) runtime
+	int ht_max_length;
+	int ht_curr_length; 
+	
+} rht_t; 
+
+
 hashtable_t *hopen(uint32_t hsize) {
+	rht_t *hp;
 
-	rhe_t *hp;
-
-	if (!(hp = (rhe_t*)calloc(hsize, sizeof(rhe_t)))) {
+	if (!(hp->elems_array = (rht_t*)calloc(hsize, sizeof(rhe_t)))) {
 		printf("[Error: calloc failed for hashtable]\n");
 		return NULL;
 	}
 
+	hp->ht_max_length = hsize;
+	hp->ht_curr_length = 0; 
+	
 	for(int i = 0; i < hsize; i++) {
-		hp[i].queue = qopen();
-		hp[i].key = NULL;
+		((hp->elems_array)[i]).queue = qopen();
+		((hp->elems_array)[i]).key = NULL;
 	}
 	
 	return (hashtable_t*)hp; 
@@ -44,14 +59,16 @@ void hclose(hashtable_t *htp) {
 
 	rhe_t *e;
 	e = (rhe_t*)htp;
+
+	
 	
 }
 
 int main(void) {
 
-	int32_t size = 17;
+	int32_t size = 10;
 	
-	hashtable_t* thingie = hopen(size);
+	hashtable_t* hashtable = hopen(size);
 	//qclose(((rhe_t*)thingie)[0].queue);
 	//free(thingie);
 	//hclose(thingie);

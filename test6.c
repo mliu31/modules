@@ -44,23 +44,63 @@ void printe(void* element_p) {
 }
 
 int main(void) { 
-	queue_t *my_queue_1 = qopen();
-	queue_t *my_queue_2 = qopen();
+	queue_t *my_queue1 = qopen();
+	queue_t *my_queue2 = qopen();
 
-	int32_t thing;
-	int int1; 
-	int_t *intt1;
+	int int1;
+	int_t *intt1; 
+
+	int1 = 1;
+
+	intt1 = makeint(int1);
+	
+	/*queue_t *queue_soln1 = qopen();
+	queue_t *queue_soln2 = qopen();
+	queue_t *queue_soln3 = qopen();
+	queue_t *queue_soln4 = qopen();
+	queue_t *queue_soln5 = qopen();
+	queue_t *queue_soln6 = qopen();
+	queue_t *queue_soln7 = qopen();
+	
+	int int1, int2, int3; 
+	int_t *intt1, *intt2, *intt3;
 	
 	int1 = 1;
+	int2 = 2;
+	int3 = 3; 
 	
 	intt1 = makeint(int1);
+	intt2 = makeint(int2);
+	intt3 = makeint(int3);
+	
+	
+	// 1. both q's NULL
+	qconcat(my_queue1, my_queue2);
+	
+	// 2. q1 null, q2 empty
 
-	thing = qput(my_queue_2, intt1);
-	qconcat(my_queue_1, my_queue_2);
-	qapply(my_queue_1, printe);
+	// 3. q1 empty, q2 null
+
+	// 4. q1 filled, q2 empty
+
+	// 5. q1 empty, q2 filled
+
+	// 6. q1 filled, q2 NULL
+
+	// 7. q1 NULL, q2 empty
+
+	// 8. both q's empty
+
+	// 9. both q's filled
+	
+	*/
+	
+	qput(my_queue2, intt1);
+	qconcat(my_queue1, my_queue2);
+	qapply(my_queue1, printe);
 	
 	free(intt1);
- 	qclose(my_queue_1);
+ 	qclose(my_queue1);
 	
 	exit(EXIT_SUCCESS);
 

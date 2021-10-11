@@ -125,12 +125,7 @@ void* qsearch(queue_t *qp, bool (*searchfn)(void* elementp, const void* keyp), c
 	
 	while(e != NULL) {
 		if(searchfn(e->data, skeyp) == true) {
-<<<<<<< HEAD
 			return e->data;
-=======
-			removed_data = e->data;
-			return removed_data;
->>>>>>> dcaff6392e6fff564cc129b1192614804a89433d
 		}
 		e = e->next;
 	}
