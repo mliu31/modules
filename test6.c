@@ -88,7 +88,11 @@ int main(void) {
 	
 	qconcat(my_queue_7, my_queue_8);
 	qapply(my_queue_7, printe);
-	
+
+	free(intt1);
+	free(intt2);
+	free(intt3);
+	free(intt4);
  	qclose(my_queue_7);
 	qclose(my_queue_5);
 	qclose(my_queue_4);
