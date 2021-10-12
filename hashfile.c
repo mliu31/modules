@@ -16,7 +16,6 @@
 #include <string.h>
 #include "queue.h"
 #include "queue.c"
-//#include "list.h"
 #include "hash.h"
 
 #define STARTING_ARR_CAPACITY 50
@@ -86,6 +85,24 @@ void hclose(hashtable_t *htp) {
 }
 
 int32_t hput(hashtable_t *htp, void *ep, const char *key, int keylen) {
+	//TODO
+}
+
+void happly(hashtable_t *htp, void (*fn)(void* ep)) {
+	//TODO
+}
+
+void *hsearch(hashtable_t *htp,
+							bool (*searchfn)(void* elementp, const void* searchkeyp),
+							const char *key,
+							int32_t keylen) {
+	//TODO
+}
+
+void *hremove(hashtable_t *htp,
+							bool (*searchfn)(void* elementp, const void* searchkeyp),
+							const char *key,
+							int32_t keylen) {
 	//TODO
 }
 
