@@ -48,6 +48,10 @@ int main(void) {
   qput(my_queue, intt3);	
 
 	qapply(my_queue, printe); 
+
+	free(intt1);
+	free(intt2);
+	free(intt3);
 	
  	qclose(my_queue);
 	exit(EXIT_SUCCESS);

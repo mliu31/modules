@@ -44,59 +44,63 @@ void printe(void* element_p) {
 }
 
 int main(void) { 
-	queue_t *my_queue_1 = qopen();
-	queue_t *my_queue_2 = qopen();
-	queue_t *my_queue_3 = qopen();
-	queue_t *my_queue_4 = qopen();
-	queue_t *my_queue_5 = qopen();
-	queue_t *my_queue_6 = qopen();
-	queue_t *my_queue_7 = qopen();
-	queue_t *my_queue_8 = qopen();
+	queue_t *my_queue1 = qopen();
+	queue_t *my_queue2 = qopen();
+
+	int int1;
+	int_t *intt1; 
+
+	int1 = 1;
+
+	intt1 = makeint(int1);
 	
-	int int1, int2, int3, int4; 
-	int_t *intt1, *intt2, *intt3, *intt4;
+	/*queue_t *queue_soln1 = qopen();
+	queue_t *queue_soln2 = qopen();
+	queue_t *queue_soln3 = qopen();
+	queue_t *queue_soln4 = qopen();
+	queue_t *queue_soln5 = qopen();
+	queue_t *queue_soln6 = qopen();
+	queue_t *queue_soln7 = qopen();
+	
+	int int1, int2, int3; 
+	int_t *intt1, *intt2, *intt3;
 	
 	int1 = 1;
 	int2 = 2;
-	int3 = 3;
-	int4 = 4;
+	int3 = 3; 
 	
 	intt1 = makeint(int1);
 	intt2 = makeint(int2);
 	intt3 = makeint(int3);
-	intt4 = makeint(int4);
+	
+	
+	// 1. both q's NULL
+	qconcat(my_queue1, my_queue2);
+	
+	// 2. q1 null, q2 empty
 
-	
-	// search for elem in empty queue
-	qconcat(my_queue_1, my_queue_2); 
-	qapply(my_queue_1, printe);
-	
-	qput(my_queue_3, intt3);
+	// 3. q1 empty, q2 null
 
-	// search for existing elem in non-empty queue
-	qconcat(my_queue_4, my_queue_3);
-	qapply(my_queue_4, printe);
-	
-	qput(my_queue_5, intt4);
-	
-	// search for non-existent elem in non-empty queue
-	qconcat(my_queue_5, my_queue_6);
-	qapply(my_queue_5, printe);
+	// 4. q1 filled, q2 empty
 
-	qput(my_queue_7, intt1);
-	qput(my_queue_8, intt2);
-	
-	qconcat(my_queue_7, my_queue_8);
-	qapply(my_queue_7, printe);
+	// 5. q1 empty, q2 filled
 
+	// 6. q1 filled, q2 NULL
+
+	// 7. q1 NULL, q2 empty
+
+	// 8. both q's empty
+
+	// 9. both q's filled
+	
+	*/
+	
+	qput(my_queue2, intt1);
+	qconcat(my_queue1, my_queue2);
+	qapply(my_queue1, printe);
+	
 	free(intt1);
-	free(intt2);
-	free(intt3);
-	free(intt4);
- 	qclose(my_queue_7);
-	qclose(my_queue_5);
-	qclose(my_queue_4);
-	qclose(my_queue_1);
+ 	qclose(my_queue1);
 	
 	exit(EXIT_SUCCESS);
 
