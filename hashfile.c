@@ -15,10 +15,11 @@
 #include <stdbool.h>
 #include <string.h>
 #include "queue.h"
-#include "list.h"
+#include "queue.c"
+//#include "list.h"
 #include "hash.h"
 
-#define STARTING_ARR_CAPACITY 20; 
+#define STARTING_ARR_CAPACITY 50
 
 typedef struct real_helem_t {
 	queue_t *queue;
@@ -34,52 +35,67 @@ typedef struct real_hashtable_t {
 	
 } rht_t; 
 
+static void printe(void* elementp) {
+	printf("%d-->", *((int*)elementp));
+}
 
 hashtable_t *hopen(uint32_t hsize) {
 	rht_t *hp;
-
-	if (!(hp->elems_array = (rht_t*)calloc(hsize, sizeof(rhe_t)))) {
+	rhe_t *ep;
+	
+	if (!(hp = (rht_t*)calloc(1, sizeof(rht_t)))) {
 		printf("[Error: calloc failed for hashtable]\n");
 		return NULL;
 	}
 
 	hp->max_len = hsize;
-	hp->curr_len = 0; 
-	
+	hp->curr_len = 0;
+			
 	for(int i = 0; i < hsize; i++) {
-		((hp->elems_array)[i]).queue = qopen();
-		((hp->elems_array)[i]).key = NULL;
+		//printf("For loop\n");
+
+		if (!(ep = (rhe_t*)calloc(hsize, sizeof(rhe_t)))) {
+			printf("[Error: calloc failed for hash element]\n");
+			return NULL;
+		}
+
+		hp->elems_array[i] = ep;
+		
+		ep->queue = qopen();
+		ep->key = NULL;
 	}
-	
+
 	return (hashtable_t*)hp; 
 	
 }
 
 void hclose(hashtable_t *htp) {
+	rht_t *hp;
+	rhe_t *ep;
 
-	// loop thru each elem in hash (rht_t) ht->elem_array
-	// create rhe_t elem 
-	// free queue and key
+	hp = (rht_t*)(htp);
 
-	// free elems_array
-	// free ht
+	for(int i = 0; i < hp->max_len; i++) {
+		ep = hp->elems_array[i];
+		qclose(ep->queue);
+		free(ep);
+ 	}
+
+	free(hp);
 	
-	rhe_t *e;
-	e = (rhe_t*)htp;
-	
-	
-	
+}
+
+int32_t hput(hashtable_t *htp, void *ep, const char *key, int keylen) {
+	//TODO
 }
 
 int main(void) {
 
-	int32_t size = 10;
+	int32_t size = 3;
 	
 	hashtable_t* hashtable = hopen(size);
-	//qclose(((rhe_t*)thingie)[0].queue);
-	//free(thingie);
-	//hclose(thingie);
+	hclose(hashtable);
 
-	return 0;
+  exit(EXIT_SUCCESS);
 	
 }
