@@ -29,7 +29,7 @@ hashtable_t *hopen(uint32_t hsize) {
 	rht_t *hp;
 	
 	if (!(hp = (rht_t*)calloc(1, sizeof(rht_t)))) {
-		printf("[Error: malloc failed for hashtable]\n");
+		printf("[Error: calloc failed for hashtable]\n");
 		return NULL;
 	}
 
@@ -71,13 +71,7 @@ int32_t hput(hashtable_t *htp, void *ep, const char *key, int keylen) {
 	hashnumber = SuperFastHash(key, keylen, hp->len);
 
 	return qput(hp->table[hashnumber], ep);
-} 
-
-
-void printe(void *h) {
-	puts((char*)h);
 }
-
 
 void happly(hashtable_t *htp, void (*fn)(void* ep)) {
 	rht_t *hp;
