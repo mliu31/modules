@@ -73,6 +73,17 @@ void printe(void *h) {
 	puts((char*)h);
 }
 
+bool keysearch(void* elementp, const void* searchkeyp) {
+
+	char *elp = (char*)elementp;
+	char *kep = (char*)searchkeyp;
+
+	if(strcmp(elp, kep) == 0)
+		return true;
+	else
+		return false;
+
+}
 void happly(hashtable_t *htp, void (*fn)(void* ep)) {
 	rht_t *hp;
 
@@ -107,4 +118,26 @@ void *hremove(hashtable_t *htp,
 	hashnumber = SuperFastHash(key, keylen, hp->len);
 
 	return qremove(hp->table[hashnumber], searchfn, key);
+}
+
+int main(void) {
+
+	uint32_t size = 3;
+	char greeting[] = "hello";
+	
+	hashtable_t* hashtable = hopen(size);
+	hput(hashtable, greeting, "hello", 5);
+	happly(hashtable, printe);
+	printf("end of happly\n");
+	char* whatever = (char*)hsearch(hashtable, keysearch, "hello", 5);
+	puts(whatever);
+	printf("end of hsearch\n");
+	char* remove = (char*)hremove(hashtable, keysearch, "hello", 5);
+	happly(hashtable, printe);
+	printf("removed string is %s\n", remove);
+	printf("end of hremove\n");
+	hclose(hashtable);
+
+  exit(EXIT_SUCCESS);
+	
 }
