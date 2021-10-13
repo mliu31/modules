@@ -18,10 +18,12 @@
 #include "hash.h"
 #include "hash.c"
 
+
 typedef struct real_hashtable_t {
 	queue_t** table; 
 	uint32_t len;
 } rht_t; 
+
 
 hashtable_t *hopen(uint32_t hsize) {
 	rht_t *hp;
@@ -45,6 +47,7 @@ hashtable_t *hopen(uint32_t hsize) {
 	return (hashtable_t*)hp; 	
 }
 
+
 void hclose(hashtable_t *htp) {
 	rht_t *hp;
 
@@ -58,6 +61,7 @@ void hclose(hashtable_t *htp) {
 	free(hp);
 }
 
+
 int32_t hput(hashtable_t *htp, void *ep, const char *key, int keylen) {
 
 	rht_t *hp;
@@ -69,9 +73,11 @@ int32_t hput(hashtable_t *htp, void *ep, const char *key, int keylen) {
 	return qput(hp->table[hashnumber], ep);
 } 
 
+
 void printe(void *h) {
 	puts((char*)h);
 }
+
 
 void happly(hashtable_t *htp, void (*fn)(void* ep)) {
 	rht_t *hp;
@@ -82,6 +88,7 @@ void happly(hashtable_t *htp, void (*fn)(void* ep)) {
 	  qapply(hp->table[i], fn);
 	}
 }
+
 
 void *hsearch(hashtable_t *htp,
 							bool (*searchfn)(void* elementp, const void* searchkeyp),
@@ -95,6 +102,7 @@ void *hsearch(hashtable_t *htp,
 
 	return qsearch(hp->table[hashnumber], searchfn, key);
 }
+
 
 void *hremove(hashtable_t *htp,
 							bool (*searchfn)(void* elementp, const void* searchkeyp),

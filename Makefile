@@ -24,4 +24,4 @@ test6.test:   queue.o test6.o
 							gcc $(CFLAGS) queue.o test6.o -o $@
 
 clean:
-							rm -f *.o *.test
+							rm -f *.o *.test #\'*\'
