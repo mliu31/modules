@@ -44,7 +44,7 @@ int main(void) {
 		exit(EXIT_FAILURE); 
 	}
 
-	successful_put = hput(htp, message, "hello world", 11);
+	successful_put = hput(htp, htentry, "hello world", 11);
 	if(successful_put != 0) {
 		printf("[Error: Failed to add entry into hash table]");
 		exit(EXIT_FAILURE); 
