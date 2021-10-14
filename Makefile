@@ -1,18 +1,27 @@
 CFLAGS=-Wall -pedantic -std=c11 -I. -g
 
-all:					htest1.test htest2.test #htest3.test
+all:					test1.test test2.test test3.test test4.test test5.test test6.test
 
 %.o:					%.c %.h
 							gcc $(CFLAGS) -c $<
 
-htest1.test: 	hashfile.o queue.o htest1.o
+test1.test: 	queue.o test1.o
 							gcc $(CFLAGS) $^ -o $@
 
-htest2.test:	hashfile.o queue.o htest2.o
+test2.test:		queue.o test2.o
 							gcc $(CFLAGS) queue.o test2.o -o $@
 
-#htest3.test:	hashfile.o htest3.o
-#							gcc $(CFLAGS) queue.o test3.o -o $@
+test3.test:		queue.o test3.o
+							gcc $(CFLAGS) queue.o test3.o -o $@
+
+test4.test:		queue.o test4.o
+							gcc $(CFLAGS) queue.o test4.o -o $@
+
+test5.test:   queue.o test5.o
+							gcc $(CFLAGS) queue.o test5.o -o $@
+
+test6.test:   queue.o test6.o
+							gcc $(CFLAGS) queue.o test6.o -o $@
 
 clean:
 							rm -f *.o *.test #\'*\'

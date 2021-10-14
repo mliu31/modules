@@ -222,12 +222,25 @@ void qconcat(queue_t *q1p, queue_t *q2p) {
 	rq2 = (rq_t*)q2p;
 
 	if(rq1->front != NULL) {
+		if(rq2->front != NULL) {
+			rq1->back->next = rq2->front;
+			rq1->back = rq2->back;
+		}
+	} else {
+		if(rq2->front != NULL) {
+			rq1->front = rq2->front;
+			rq1->back = rq2->back;
+		}
+	}
+	
+	/*
+	if(rq1->front != NULL) {
 		rq1->back->next = rq2->front;
 		rq1->back = rq2->back;
 	} else {
 		rq1->front = rq2->front;
 		rq1->back = rq2->back;
-	}
+		}*/
 	
 	free(rq2);
 
