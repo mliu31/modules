@@ -14,10 +14,28 @@
 #include "hash.h"
 
 
+typedef struct str_type {
+	char* str;
+} str_t;
+
+
+str_t* makestr(char* input_str) {
+	str_t* str = (str_t*) calloc(1, sizeof(str_t));
+	str = (str_t*) input_str;
+
+	return str; 
+}
+
+
 int main(void) {
-	uint32_t htsize = 10;
-	char message[] = "hello world"; 
-	int32_t removed_res; 
+	uint32_t htsize;
+	char* message;
+	int32_t successful_put;
+	str_t* htentry; 
+
+	htsize = 10;
+	message = "hello world"; 
+	htentry= makestr(message); 
 	
 	hashtable_t* htp = hopen(htsize); 
 	
@@ -26,12 +44,13 @@ int main(void) {
 		exit(EXIT_FAILURE); 
 	}
 
-	removed_res = hput(htp, message, "hello world", 11);
-	if(removed_res != 0) {
+	successful_put = hput(htp, message, "hello world", 11);
+	if(successful_put != 0) {
 		printf("[Error: Failed to add entry into hash table]");
 		exit(EXIT_FAILURE); 
 	}
-	
+
+	free(htentry); 
 	hclose(htp); 
 		
 	exit(EXIT_SUCCESS); 
