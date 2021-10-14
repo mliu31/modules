@@ -20,10 +20,10 @@ typedef struct str_type {
 
 
 str_t* makestr(char* input_str) {
-	str_t* str = (str_t*) calloc(1, sizeof(str_t));
-	str = (str_t*) input_str;
+	str_t* something = (str_t*) calloc(1, sizeof(str_t));
+	something->str = input_str;
 
-	return str; 
+	return something; 
 }
 
 
@@ -44,7 +44,8 @@ int main(void) {
 		exit(EXIT_FAILURE); 
 	}
 
-	successful_put = hput(htp, message, "hello world", 11);
+	successful_put = hput(htp, htentry->str, "hello world", 11);
+
 	if(successful_put != 0) {
 		printf("[Error: Failed to add entry into hash table]");
 		exit(EXIT_FAILURE); 

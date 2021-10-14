@@ -9,10 +9,21 @@
  * 
  */
 
-#include <stdint.h>
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include "hash.h"
+
+typedef struct str_type {
+	char* str;
+} str_t;
+
+str_t* makestr(char* input_str) {
+	str_t* something = (str_t*) calloc(1, sizeof(str_t));
+	something->str = input_str;
+
+	return something;
+}
 
 void printe(void *h) {
 	puts((char*)h);
@@ -31,21 +42,28 @@ bool keysearch(void* elementp, const void* searchkeyp) {
 }
 
 int main(void) {
-	uint32_t htsize = 10;
-	char message[] = "hello world";
+	uint32_t htsize;
+	char* message;
 	int32_t put;
+	str_t* htentry;
+
+	htsize = 10;
+	message = "hello world";
+	htentry = makestr(message);
 	
 	hashtable_t* htp = hopen(htsize);
 	
-	put = hput(htp, message, "hello world", 11);
+	put = hput(htp, htentry->str, "hello world", 11);
 	happly(htp, printe);
 
 	char* search_result = (char*)hsearch(htp, keysearch, "hello world", 11);
 
 	if (strcmp(search_result, "hello world") != 0) {
 		printf("[Error: Failed to search the right entry in the hash table]");
+		exit(EXIT_FAILURE);
 	}
-	
+
+	free(htentry);
 	hclose(htp);
 	exit(EXIT_SUCCESS);
 	
