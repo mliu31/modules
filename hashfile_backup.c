@@ -18,18 +18,16 @@
 #include "hash.h"
 #include "hash.c"
 
-
 typedef struct real_hashtable_t {
 	queue_t** table; 
 	uint32_t len;
 } rht_t; 
 
-
 hashtable_t *hopen(uint32_t hsize) {
 	rht_t *hp;
 	
 	if (!(hp = (rht_t*)calloc(1, sizeof(rht_t)))) {
-		printf("[Error: calloc failed for hashtable]\n");
+		printf("[Error: malloc failed for hashtable]\n");
 		return NULL;
 	}
 
@@ -47,7 +45,6 @@ hashtable_t *hopen(uint32_t hsize) {
 	return (hashtable_t*)hp; 	
 }
 
-
 void hclose(hashtable_t *htp) {
 	rht_t *hp;
 
@@ -61,7 +58,6 @@ void hclose(hashtable_t *htp) {
 	free(hp);
 }
 
-
 int32_t hput(hashtable_t *htp, void *ep, const char *key, int keylen) {
 
 	rht_t *hp;
@@ -71,8 +67,23 @@ int32_t hput(hashtable_t *htp, void *ep, const char *key, int keylen) {
 	hashnumber = SuperFastHash(key, keylen, hp->len);
 
 	return qput(hp->table[hashnumber], ep);
+} 
+
+void printe(void *h) {
+	puts((char*)h);
 }
 
+bool keysearch(void* elementp, const void* searchkeyp) {
+
+	char *elp = (char*)elementp;
+	char *kep = (char*)searchkeyp;
+
+	if(strcmp(elp, kep) == 0)
+		return true;
+	else
+		return false;
+
+}
 void happly(hashtable_t *htp, void (*fn)(void* ep)) {
 	rht_t *hp;
 
@@ -82,7 +93,6 @@ void happly(hashtable_t *htp, void (*fn)(void* ep)) {
 	  qapply(hp->table[i], fn);
 	}
 }
-
 
 void *hsearch(hashtable_t *htp,
 							bool (*searchfn)(void* elementp, const void* searchkeyp),
@@ -97,7 +107,6 @@ void *hsearch(hashtable_t *htp,
 	return qsearch(hp->table[hashnumber], searchfn, key);
 }
 
-
 void *hremove(hashtable_t *htp,
 							bool (*searchfn)(void* elementp, const void* searchkeyp),
 							const char *key,
@@ -109,4 +118,26 @@ void *hremove(hashtable_t *htp,
 	hashnumber = SuperFastHash(key, keylen, hp->len);
 
 	return qremove(hp->table[hashnumber], searchfn, key);
+}
+
+int main(void) {
+
+	uint32_t size = 3;
+	char greeting[] = "hello";
+	
+	hashtable_t* hashtable = hopen(size);
+	hput(hashtable, greeting, "hello", 5);
+	happly(hashtable, printe);
+	printf("end of happly\n");
+	char* whatever = (char*)hsearch(hashtable, keysearch, "hello", 5);
+	puts(whatever);
+	printf("end of hsearch\n");
+	char* remove = (char*)hremove(hashtable, keysearch, "hello", 5);
+	happly(hashtable, printe);
+	printf("removed string is %s\n", remove);
+	printf("end of hremove\n");
+	hclose(hashtable);
+
+  exit(EXIT_SUCCESS);
+	
 }
