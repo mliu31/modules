@@ -44,7 +44,6 @@ bool keysearch(void* elementp, const void* searchkeyp) {
 int main(void) {
 	uint32_t htsize;
 	char* message;
-	int32_t put;
 	str_t* htentry;
 
 	htsize = 10;
@@ -53,7 +52,7 @@ int main(void) {
 	
 	hashtable_t* htp = hopen(htsize);
 	
-	put = hput(htp, htentry->str, "hello world", 11);
+	hput(htp, htentry->str, "hello world", 11);
 	happly(htp, printe);
 
 	char* search_result = (char*)hsearch(htp, keysearch, "hello world", 11);
